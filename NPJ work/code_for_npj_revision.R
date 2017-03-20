@@ -3,24 +3,26 @@ library(arm)
 library(nlme)
 library(dplyr)
 library(ggplot2)
+#library(plotrix)
 
 setwd("~/Documents/git/carpen/NPJ work")
 seed<-read.csv(file="Sedge Seed Data - Sheet1 (1).csv", h=TRUE)
-#seedset<-read.csv(file="seed_set_indv.csv", h=T)
+
 #plotting data
 names(seed)
-seed<-select_(seed,"Treatment","Clone","Seed_set","Ave_seed_weight")
-seed$Seed_set<-as.numeric(seed$Seed_set) 
+#seed<-select_(seed,"Treatment","Clone","Seed_set","Ave_seed_weight")
+seed$Seed_set<-as.numeric(as.character(seed$Seed_set)) ###this command is changing your values
 seed<-na.omit(seed)
+sapply(seed, class)
 
 ggplot(seed, aes(x=Seed_set))+geom_histogram()
 ggplot(seed, aes(x=Ave_seed_weight))+geom_histogram()
 
 t.test(Seed_set~Treatment, data=seed)
 t.test(Ave_seed_weight~Treatment, data=seed)
-weight<-lmer(Ave_seed_weight~Treatment+(1|Clone), data=seed )
 
 ##model
+weight<-lmer(Ave_seed_weight~Treatment+(1|Clone), data=seed )
 yield<-glmer(Seed_set~Treatment+ (1|Clone),family = poisson(link="log"),nAGQ = 1, data=seed)
 
 display(yield)
@@ -55,9 +57,18 @@ c2
 c
 c2
 
-
-
+#why did I have different results before
+seedset<-read.csv(file="seed_set_indv.csv", h=T)
+t.test(seed_set~Treatment, data=seedset)
+mean(seed$Seed_set)
+mean(seedset$seed_set)
+4.6/2.8
 #done
+
+
+
+
+
 
 #over dispersion## where did i find this
 n<-175
@@ -79,3 +90,8 @@ sqrt(2.132154)
 ##se=0.1305994
 predict(yield$reatment)
 citation("lme4")
+###checking standard errors
+out<-filter(seed,Treatment=="outcrossed")
+inn<-filter(seed,Treatment=="selfed")
+std.error(inn$Seed_set)
+std.error(out$Seed_set)
