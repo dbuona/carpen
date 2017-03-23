@@ -48,10 +48,10 @@ predictedscores2<-predict(weight,re.form=NA, type="response")
 table(predictedscores2)
 
 ###visualizations
-c<-ggplot(seed, aes(x=Treatment, y=Seed_set))+labs( x = "Treatment", y = "Seed set") +stat_summary()
+c<-ggplot(seed, aes(x=Treatment, y=Seed_set))+labs( x = "Treatment", y = "Average number of seeds/inflorenscence") +stat_summary()
 c
 
-c2<-ggplot(seed, aes(x=Treatment, y=Ave_seed_weight))+labs( x = "Treatment", y = "Average seed weight") +stat_summary()
+c2<-ggplot(seed, aes(x=Treatment, y=Ave_seed_weight))+labs( x = "Treatment", y = "Average seed weight (mg)") +stat_summary()
 c2
 
 c
